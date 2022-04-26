@@ -9,7 +9,6 @@ public class Main {
         myLinkedList.add(91);
         myLinkedList.add(667);
         myLinkedList.add(94);
-//        myLinkedList.add(66, 1);
         myLinkedList.add(667);
         myLinkedList.add(700);
 
