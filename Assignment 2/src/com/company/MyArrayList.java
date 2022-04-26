@@ -2,10 +2,25 @@ package com.company;
 
 import java.util.Arrays;
 
+import java.util.Arrays;
+import java.util.Scanner;
+import static java.lang.Integer.parseInt;
+
+
 public class MyArrayList<T extends Comparable<T>> implements MyList<T>{
     private Object[] arr;
     private int length = 0;
     private int capacity = 3;
+
+    Scanner sc = new Scanner(System.in);
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
 
     public MyArrayList() {
         arr = new Object[capacity];
@@ -28,6 +43,13 @@ public class MyArrayList<T extends Comparable<T>> implements MyList<T>{
         return (T)arr[index];
     }
 
+
+    public void swap(int index1, int index2){
+        T temp = (T)arr[index1];
+        arr[index1] = arr[index2];
+        arr[index2] = temp;
+    }
+
     public void add(T item) {
         if (length == capacity)
             increaseCapacity();
@@ -37,9 +59,26 @@ public class MyArrayList<T extends Comparable<T>> implements MyList<T>{
 
     @Override
     public void sort() {
-        sortArr(arr, length);
+        System.out.println("In which order sort LinkedList? " +
+                "[ 1 - Ascending " +
+                "| 2 - Descending | anything else - cancel sorting ]");
+        String response = sc.next();
+        if(parseInt(response)==1){
+            sortArr(arr, length);
+        } else if(parseInt(response)==2){
+            sortArrDesc(arr, length);
+        }
     }
-
+    private void sortArrDesc(Object[] arr, int n){
+        if (n == 1) return;
+        for (int i = 0; i < n-1; i++)
+            if (((Comparable<T>)arr[i]).compareTo((T) arr[i+1]) < 0){
+                Object temp = arr[i];
+                arr[i] = arr[i+1];
+                arr[i+1] = temp;
+            }
+        sortArrDesc(arr, n-1);
+    }
     private void sortArr(Object[] arr, int n){
         if (n == 1) return;
         for (int i = 0; i < n-1; i++)
@@ -50,6 +89,7 @@ public class MyArrayList<T extends Comparable<T>> implements MyList<T>{
             }
         sortArr(arr, n-1);
     }
+
 
     @Override
     public void add(T item, int index) {
@@ -129,17 +169,9 @@ public class MyArrayList<T extends Comparable<T>> implements MyList<T>{
 
     @Override
     public boolean contains(Object o) {
-        for (int i = 0; i < length; i++) {
-            if(o == arr[i]){
-                return true;
-            }
-        }
-        return false;
+        return indexOf(o) >= 0;
     }
 
-
-
-    //just to check if it works or not
     @Override
     public String toString() {
         return "Array elements: "+ Arrays.toString(arr);

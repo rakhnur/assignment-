@@ -2,7 +2,7 @@ package com.company;
 
 public class MyHeap<T extends Comparable<T>>{
     private MyArrayList<T> list;
-    final private int root = 0;
+    private int root = 0;
 
     public MyHeap(){
         list = new MyArrayList<>();
@@ -18,12 +18,15 @@ public class MyHeap<T extends Comparable<T>>{
         if (list.contains(item)){
             swap(list.indexOf(item), size()-1);
             boolean removed = list.remove(item);
-            heapify(0);
+            heapify();
             return removed;
         } else return false;
     }
 
-    private void heapify(int index)
+    private void heapify() {
+        heapify(size() - 1, 0);
+    }
+    private void heapify(int size, int index)
     {
         int min   = index;
         int left  = 2 * index + 1;
@@ -33,23 +36,23 @@ public class MyHeap<T extends Comparable<T>>{
         T leftEl = leftChildOf(index);
         T rightEl = rightChildOf(index);
 
-        if (right <= (size()-1) && rightEl.compareTo(minEl) < 0)
+        if (right <= (size) && rightEl.compareTo(minEl) < 0)
             min = right;
 
-        if (left <= (size()-1) && leftEl.compareTo(minEl) < 0)
+        if (left <= (size) && leftEl.compareTo(minEl) < 0)
             min = left;
 
         if (min != index) {
             swap(index, min);
-            heapify(min);
+            heapify(size, min);
             traverseUp(index);
         }
     }
 
     public T removeRoot(){
         if (list.size() != 0) {
-            T removed = list.remove(root);
-            heapify(0);
+            T removed = list.remove(0);
+            heapify();
             return removed;
         }
         return null;
@@ -90,7 +93,7 @@ public class MyHeap<T extends Comparable<T>>{
 
     public T min(){
         if(list.size() != 0)
-            return list.get(root);
+            return list.get(0);
         return null;
     }
 
@@ -104,7 +107,6 @@ public class MyHeap<T extends Comparable<T>>{
         return list.size() == 0;
     }
 
-    ///////////////////////////////////////////// to check if it works
     public void printHeap(){
         System.out.println("");
         System.out.println("Array of heap:");
